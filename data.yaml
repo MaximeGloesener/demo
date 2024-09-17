@@ -1,0 +1,19 @@
+path: /content/gdrive/MyDrive/MOCS-Project/
+train: train
+val: val
+test: test
+
+names:
+  0: Worker
+  1: Static crane
+  2: Hanging head
+  3: Crane
+  4: Roller
+  5: Bulldozer
+  6: Excavator
+  7: Truck
+  8: Loader
+  9: Pump truck
+  10: Concrete mixer
+  11: Pile driving
+  12: Other vehicle
