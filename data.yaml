@@ -1,8 +1,9 @@
-path: /content/gdrive/MyDrive/MOCS-Project/
+path: .
 train: train
 val: val
 test: test
-
+batch: 16
+imgsz: 640
 names:
   0: Worker
   1: Static crane

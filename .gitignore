@@ -1,1 +1,13 @@
+*.txt
+*.jpg
+/detection
+/segmentation
+/train
+/test
+/val
 /images
+/runs
+/datasets
+/wandb
+*.pt
+*.pth
