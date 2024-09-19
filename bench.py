@@ -2,12 +2,14 @@ from ultralytics import YOLO
 from benchmark_yolo import benchmark
 import argparse
 import json
+import os
 
 parser = argparse.ArgumentParser(description='Benchmark YOLOv8')
 parser.add_argument('--model-path', type=str, default='runs/detect/train/weights/best.pt', help='model name')
 args = parser.parse_args()
 
 engine_path = '/'.join(args.model_path.split('/')[:-1])+'/best.engine'
+results_path = args.model_path.split('/')[-2]
 
 # base model full precision non pruned
 model_weight = args.model_path
@@ -35,6 +37,9 @@ base_model.export(format="engine",
 model = YOLO(engine_path, task="detect")
 results = benchmark(model, 640, type='engine')
 all_results['fp32'] = results
+os.rename(engine_path, engine_path.replace('.engine', '_fp32.engine'))
+
+
 # TensorRT FP16
 print('starting fp 16')
 base_model.export(format="engine",
@@ -46,6 +51,7 @@ base_model.export(format="engine",
 model = YOLO(engine_path, task="detect")
 results = benchmark(model, 640, type='engine')
 all_results['fp16'] = results
+os.rename(engine_path, engine_path.replace('.engine', '_fp16.engine'))
 
 # TensorRT INT8 with calibration `data`
 print('starting int 8')
@@ -59,7 +65,8 @@ base_model.export(format="engine",
 model = YOLO(engine_path, task="detect")
 results = benchmark(model, 640, type='engine')
 all_results['int8'] = results
+os.rename(engine_path, engine_path.replace('.engine', '_int8.engine'))
 
 # save all the results to a json file for later comparison
-with open('results.json', 'w') as f:
+with open(f'results{results_path}.json', 'w') as f:
     json.dump(all_results, f)
