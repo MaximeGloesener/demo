@@ -9,7 +9,7 @@ parser.add_argument('--model-path', type=str, default='runs/detect/train/weights
 args = parser.parse_args()
 
 engine_path = '/'.join(args.model_path.split('/')[:-1])+'/best.engine'
-results_path = args.model_path.split('/')[-2]
+results_path = args.model_path.split('/')[-3]
 
 # base model full precision non pruned
 model_weight = args.model_path
@@ -33,6 +33,7 @@ base_model.export(format="engine",
                    imgsz=640,
                    dynamic=True,
                    verbose=False,
+                   workspace=2,
                    batch=8)
 model = YOLO(engine_path, task="detect")
 results = benchmark(model, 640, type='engine')
@@ -47,6 +48,7 @@ base_model.export(format="engine",
                    dynamic=True,
                    verbose=False,
                    batch=8,
+                   workspace=2,
                    half=True)
 model = YOLO(engine_path, task="detect")
 results = benchmark(model, 640, type='engine')
@@ -61,6 +63,7 @@ base_model.export(format="engine",
                    verbose=False,
                    batch=8,
                    int8=True,
+                   workspace=2,
                    data="data.yaml")
 model = YOLO(engine_path, task="detect")
 results = benchmark(model, 640, type='engine')

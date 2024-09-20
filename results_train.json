@@ -1,0 +1,4 @@
+{
+  "model": "runs/detect/train/weights/best.pt",
+  "base_model": { "layers": 168, "params": 3008183, "flops": 8.0980992 }
+}
