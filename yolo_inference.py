@@ -116,5 +116,5 @@ if __name__ == "__main__":
     else: model_type = 'base_model'
 
     os.makedirs('output', exist_ok=True)
-    output_path = f"output/out_video_{stats_path.split('.')[0]}_{model_type}_{video_path}.mp4"
+    output_path = f"output/out_video_{stats_path.split('.')[0].split('/')[1]}_{model_type}_{video_path.split('.')[0]}.mp4"
     main(model_path, video_path, output_path, stats_path, model_type)
