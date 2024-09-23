@@ -16,23 +16,32 @@ def add_stats_to_frame(frame, stats, model_type):
     font_scale = 1
     color = (255, 255, 255)  # yellow color
     thickness = 2
-    line_spacing = 30
+    line_spacing = 32
 
     model_info = stats['model_info']
     model_stats = stats[model_type]
 
-    lines = [
+
+    lines_top = [
         f"Model: {stats['model']}",
-        f"Type: {model_type}",
+        f"Quantization Type: {model_type}",
         f"Layers: {model_info['layers']}, Params: {model_info['params']/1e6:.2f}M, FLOPS: {model_info['flops']:.2f}G",
         #f"FPS (GPU): {model_stats['fps_gpu']:.2f}",
-        f"mAP50: {model_stats['map50']:.4f}, mAP50-95: {model_stats['map5095']:.4f}",
-        #f"Avg. Emissions: {model_stats['avg_emissions']:.2e} kgCO2eq",
-        #f"Avg. Energy: {model_stats['avg_energy']:.2e} kWh"
+        f'VRAM: {model_stats['max_memory_used']-model_stats['current_memory_used']:.2f}MB',
     ]
 
-    for i, line in enumerate(lines):
+    lines_bottom = [
+        f"Avg. Emissions: {model_stats['avg_emissions']*1e6:.2e} gCO2eq",
+        f"Avg. Energy: {model_stats['avg_energy']*1e6:.2e} mWh",
+        f"mAP50: {model_stats['map50']:.4f}, mAP50-95: {model_stats['map5095']:.4f}",
+        f"Hardware: RTX 4090",
+    ]
+    for i, line in enumerate(lines_top):
         y = 30 + i * line_spacing
+        cv2.putText(frame, line, (10, y), font, font_scale, color, thickness, cv2.LINE_AA)
+
+    for i, line in enumerate(lines_bottom):
+        y = height - 30 - (len(lines_bottom) - i - 1) * line_spacing
         cv2.putText(frame, line, (10, y), font, font_scale, color, thickness, cv2.LINE_AA)
 
     return frame
