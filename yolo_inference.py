@@ -37,7 +37,7 @@ def add_stats_to_frame(frame, stats, model_type):
 
     return frame
 
-def process_video(model, video_path, output_path, stats, model_type, conf_threshold=0.4, iou_threshold=0.7):
+def process_video(model, video_path, output_path, stats, model_type, conf_threshold=0.40, iou_threshold=0.7):
     # Open the video file
     video = cv2.VideoCapture(video_path)
 
@@ -98,9 +98,10 @@ def main(model_path, video_path, output_path, stats_path, model_type):
 
 if __name__ == "__main__":
     import argparse
+    import os
 
     parser = argparse.ArgumentParser(description='Benchmark YOLOv8')
-    parser.add_argument('--model-path', type=str, default='runs/detect/train/weights/best.pt', help='model name')
+    parser.add_argument('--model-path', type=str, default='best.pt', help='model name')
     parser.add_argument('--video-path', type=str, default='example_video.mp4', help='video name')
     parser.add_argument('--stats-path', type=str, default='yolo_n_results.json', help='stats name')
     args = parser.parse_args()
@@ -114,5 +115,6 @@ if __name__ == "__main__":
     elif 'int8' in model_path: model_type = 'int8'
     else: model_type = 'base_model'
 
-    output_path = f"out_video_{stats_path}_{model_type}_{video_path}.mp4"
+    os.makedirs('output', exist_ok=True)
+    output_path = f"output/out_video_{stats_path.split('.')[0]}_{model_type}_{video_path}.mp4"
     main(model_path, video_path, output_path, stats_path, model_type)
