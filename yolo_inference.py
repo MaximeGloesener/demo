@@ -14,7 +14,7 @@ def add_stats_to_frame(frame, stats, model_type):
     height, width = frame.shape[:2]
     font = cv2.FONT_HERSHEY_SIMPLEX
     font_scale = 1
-    color = (255, 255, 255)  # White color
+    color = (255, 255, 255)  # yellow color
     thickness = 2
     line_spacing = 30
 
@@ -24,11 +24,11 @@ def add_stats_to_frame(frame, stats, model_type):
     lines = [
         f"Model: {stats['model']}",
         f"Type: {model_type}",
-        f"Layers: {model_info['layers']}, Params: {model_info['params']/1e6}M, FLOPS: {model_info['flops']:.2f}G",
-        f"FPS (GPU): {model_stats['fps_gpu']:.2f}",
+        f"Layers: {model_info['layers']}, Params: {model_info['params']/1e6:.2f}M, FLOPS: {model_info['flops']:.2f}G",
+        #f"FPS (GPU): {model_stats['fps_gpu']:.2f}",
         f"mAP50: {model_stats['map50']:.4f}, mAP50-95: {model_stats['map5095']:.4f}",
-        f"Avg. Emissions: {model_stats['avg_emissions']:.2e} kgCO2eq",
-        f"Avg. Energy: {model_stats['avg_energy']:.2e} kWh"
+        #f"Avg. Emissions: {model_stats['avg_emissions']:.2e} kgCO2eq",
+        #f"Avg. Energy: {model_stats['avg_energy']:.2e} kWh"
     ]
 
     for i, line in enumerate(lines):
@@ -37,7 +37,7 @@ def add_stats_to_frame(frame, stats, model_type):
 
     return frame
 
-def process_video(model, video_path, output_path, stats, model_type, conf_threshold=0.3, iou_threshold=0.6):
+def process_video(model, video_path, output_path, stats, model_type, conf_threshold=0.4, iou_threshold=0.7):
     # Open the video file
     video = cv2.VideoCapture(video_path)
 
@@ -64,6 +64,16 @@ def process_video(model, video_path, output_path, stats, model_type, conf_thresh
             # Visualize the results on the frame
             annotated_frame = results[0].plot()
 
+            # Get FPS
+            fps_gpu = results[0].speed["inference"]
+
+            # add fps to the frame to right
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            font_scale = 1
+            color = (255, 255, 255)
+            thickness = 2
+            y = 30
+            cv2.putText(annotated_frame, f"FPS (GPU): {1000/fps_gpu:.2f}", (width-320, y), font, font_scale, color, thickness, cv2.LINE_AA)
             # Add stats to the frame
             annotated_frame = add_stats_to_frame(annotated_frame, stats, model_type)
 
@@ -87,11 +97,22 @@ def main(model_path, video_path, output_path, stats_path, model_type):
     process_video(model, video_path, output_path, stats, model_type)
 
 if __name__ == "__main__":
-    model_path = "best.pt"
-    video_path = "example_video.mp4"
-    stats_path = "resultstrain.json"
+    import argparse
 
-    # Process for each model type
-    for model_type in ["base_model"]:
-        output_path = f"out_video_{model_type}.mp4"
-        main(model_path, video_path, output_path, stats_path, model_type)
+    parser = argparse.ArgumentParser(description='Benchmark YOLOv8')
+    parser.add_argument('--model-path', type=str, default='runs/detect/train/weights/best.pt', help='model name')
+    parser.add_argument('--video-path', type=str, default='example_video.mp4', help='video name')
+    parser.add_argument('--stats-path', type=str, default='yolo_n_results.json', help='stats name')
+    args = parser.parse_args()
+
+    model_path = args.model_path
+    video_path = args.video_path
+    stats_path = args.stats_path
+
+    if 'fp16' in model_path: model_type = 'fp16'
+    elif 'fp32' in model_path: model_type = 'fp32'
+    elif 'int8' in model_path: model_type = 'int8'
+    else: model_type = 'base_model'
+
+    output_path = f"out_video_{stats_path}_{model_type}_{video_path}.mp4"
+    main(model_path, video_path, output_path, stats_path, model_type)
