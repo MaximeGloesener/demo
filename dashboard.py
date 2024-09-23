@@ -33,7 +33,7 @@ def prepare_dataframe(data):
 model_sizes = ['n', 's', 'm', 'l', 'x']  # Add or modify as needed
 data = {}
 for size in model_sizes:
-    file_path = f'yolo_{size}_results.json'  # Adjust file naming convention if needed
+    file_path = f'results/yolo_{size}_results.json'  # Adjust file naming convention if needed
     data[size] = load_data(file_path)
 
 # Prepare DataFrame
