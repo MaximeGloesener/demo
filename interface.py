@@ -26,7 +26,7 @@ def add_stats_to_frame(frame, stats, model_type):
 
     lines_top = [
         f"Model: {stats['model']}",
-        f"Quantization Type: {model_type}",
+        #f"Quantization Type: {model_type}",
         f"Layers: {model_info['layers']}, Params: {model_info['params']/1e6:.2f}M, FLOPS: {model_info['flops']:.2f}G",
         # f'VRAM: {model_stats["max_memory_used"]-model_stats["current_memory_used"]:.2f}MB',
     ]
@@ -114,7 +114,7 @@ def main(model_path, video_path, stats_path, model_type):
 
 # Initialize the main window
 app = ctk.CTk()
-app.geometry("1600x730")
+app.geometry("1920x1080")
 app.title("YOLO benchmarking")
 ctk.set_appearance_mode("light")
 
@@ -123,10 +123,10 @@ button_width = 250
 button_height = 70
 
 # Load images (ensure you have the correct paths to your images)
-image1 = Image.open("yolov8.png").resize((300, 300))  # Resize to fit the layout
-image2 = Image.open("pruning3.png").resize((400, 200))
-image3 = Image.open("Quantization.png").resize((400, 200))
-image4 = Image.open("KD.png").resize((400, 200))
+image1 = Image.open("yolov8.png").resize((450, 450))  # Resize to fit the layout
+image2 = Image.open("pruning3.png").resize((480, 240))
+image3 = Image.open("Quantization.png").resize((480, 240))
+image4 = Image.open("KD.png").resize((480, 240))
 logo = Image.open("Logos.png").resize((1500, 120))
 
 # Convert images to PhotoImage format
@@ -153,10 +153,10 @@ kd_button = ctk.CTkButton(app, text="High Compression",font=("Arial Bold", 20, "
 title = ctk.CTkLabel(app, text="Object Detection in Railway Construction Sites", font=("Arial Bold", 50, "bold" )).grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
 # add text in row 1
-text1 = ctk.CTkLabel(app, text="Base Model", font=("Arial Bold", 25, "bold" )).grid(row=1, column=0, columnspan=1, padx=10, pady=10)
-text2 = ctk.CTkLabel(app, text="Pruning", font=("Arial Bold", 25,  "bold")).grid(row=1, column=1, columnspan=1, padx=10, pady=10)
-text3 = ctk.CTkLabel(app, text="Quantization", font=("Arial Bold", 25,  "bold")).grid(row=1, column=2, columnspan=1, padx=10, pady=10)
-text4 = ctk.CTkLabel(app, text="Knowledge Distillation", font=("Arial Bold", 25,  "bold")).grid(row=1, column=3, columnspan=1, padx=10, pady=10)
+text1 = ctk.CTkLabel(app, text="Base Model", font=("Arial Bold", 30, "bold" )).grid(row=1, column=0, columnspan=1, padx=10, pady=10)
+text2 = ctk.CTkLabel(app, text="Pruning", font=("Arial Bold", 30,  "bold")).grid(row=1, column=1, columnspan=1, padx=10, pady=10)
+text3 = ctk.CTkLabel(app, text="Quantization", font=("Arial Bold", 30,  "bold")).grid(row=1, column=2, columnspan=1, padx=10, pady=10)
+text4 = ctk.CTkLabel(app, text="Knowledge Distillation", font=("Arial Bold", 30,  "bold")).grid(row=1, column=3, columnspan=1, padx=10, pady=10)
 
 # Place the images and buttons in a grid, side by side
 image_label1.grid(row=2, column=0, padx=10, pady=10)
@@ -169,11 +169,11 @@ fp16_button.grid(row=3, column=1, padx=10, pady=20)
 int8_button.grid(row=3, column=2, padx=10, pady=20)
 kd_button.grid(row=3, column=3, padx=10, pady=20)
 
-logo_label.grid(row=4, column=0, columnspan=4, padx=10, pady=20)
+logo_label.grid(row=4, column=0, columnspan=4, padx=10, pady=100)
 
 # add exit button
-exit_button = ctk.CTkButton(app, text="EXIT", font=("Arial Bold", 20, "bold" ), width=150, height=50, command=app.quit, bg_color="red", fg_color="red")
-exit_button.place(x=1430, y=20)
+exit_button = ctk.CTkButton(app, text="EXIT", font=("Arial Bold", 20, "bold" ), width=150, height=50, command=app.quit, fg_color="red", hover_color="#E64545")
+exit_button.place(x=1750, y=20)
 
 # Ensure the columns are of equal width to center the images and buttons
 app.grid_columnconfigure((0, 1, 2, 3), weight=1)
