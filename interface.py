@@ -153,10 +153,10 @@ kd_button = ctk.CTkButton(app, text="High Compression",font=("Arial Bold", 20, "
 title = ctk.CTkLabel(app, text="Object Detection in Railway Construction Sites", font=("Arial Bold", 50, "bold" )).grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
 # add text in row 1
-text1 = ctk.CTkLabel(app, text="Base Model", font=("Arial Bold", 30, "bold" )).grid(row=1, column=0, columnspan=1, padx=10, pady=10)
-text2 = ctk.CTkLabel(app, text="Pruning", font=("Arial Bold", 30,  "bold")).grid(row=1, column=1, columnspan=1, padx=10, pady=10)
-text3 = ctk.CTkLabel(app, text="Quantization", font=("Arial Bold", 30,  "bold")).grid(row=1, column=2, columnspan=1, padx=10, pady=10)
-text4 = ctk.CTkLabel(app, text="Knowledge Distillation", font=("Arial Bold", 30,  "bold")).grid(row=1, column=3, columnspan=1, padx=10, pady=10)
+text1 = ctk.CTkLabel(app, text="Base Model", font=("Arial Bold", 30, "bold" )).grid(row=1, column=0, columnspan=1, padx=10, pady=50)
+text2 = ctk.CTkLabel(app, text="Pruning", font=("Arial Bold", 30,  "bold")).grid(row=1, column=1, columnspan=1, padx=10, pady=50)
+text3 = ctk.CTkLabel(app, text="Quantization", font=("Arial Bold", 30,  "bold")).grid(row=1, column=2, columnspan=1, padx=10, pady=50)
+text4 = ctk.CTkLabel(app, text="Knowledge Distillation", font=("Arial Bold", 30,  "bold")).grid(row=1, column=3, columnspan=1, padx=10, pady=50)
 
 # Place the images and buttons in a grid, side by side
 image_label1.grid(row=2, column=0, padx=10, pady=10)
@@ -169,7 +169,7 @@ fp16_button.grid(row=3, column=1, padx=10, pady=20)
 int8_button.grid(row=3, column=2, padx=10, pady=20)
 kd_button.grid(row=3, column=3, padx=10, pady=20)
 
-logo_label.grid(row=4, column=0, columnspan=4, padx=10, pady=100)
+logo_label.grid(row=4, column=0, columnspan=4, padx=10, pady=80)
 
 # add exit button
 exit_button = ctk.CTkButton(app, text="EXIT", font=("Arial Bold", 20, "bold" ), width=150, height=50, command=app.quit, fg_color="red", hover_color="#E64545")
