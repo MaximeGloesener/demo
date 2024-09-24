@@ -68,7 +68,7 @@ def process_video(model, video_path, output_path, stats, model_type, conf_thresh
                 break
 
             # Run YOLOv8 inference on the frame
-            results = model(frame, conf=conf_threshold, iou=iou_threshold)
+            results = model(frame, conf=conf_threshold, iou=iou_threshold, verbose=False)
 
             # Visualize the results on the frame
             annotated_frame = results[0].plot()
@@ -125,5 +125,5 @@ if __name__ == "__main__":
     else: model_type = 'base_model'
 
     os.makedirs('output', exist_ok=True)
-    output_path = f"output/out_video_{stats_path.split('.')[0].split('/')[1]}_{model_type}_{video_path.split('.')[0]}.mp4"
+    output_path = f"output/out_video_{stats_path.split('.')[0].split('/')[2]}_{model_type}_{video_path.split('.')[0]}.mp4"
     main(model_path, video_path, output_path, stats_path, model_type)
