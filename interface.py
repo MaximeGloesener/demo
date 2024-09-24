@@ -114,7 +114,7 @@ def main(model_path, video_path, stats_path, model_type):
 
 # Initialize the main window
 app = ctk.CTk()
-app.geometry("1600x600")
+app.geometry("1600x730")
 app.title("YOLO benchmarking")
 ctk.set_appearance_mode("light")
 
@@ -123,10 +123,10 @@ button_width = 250
 button_height = 70
 
 # Load images (ensure you have the correct paths to your images)
-image1 = Image.open("jetson.jpg").resize((300, 300))  # Resize to fit the layout
-image2 = Image.open("image.jpg").resize((300, 300))
-image3 = Image.open("image.jpg").resize((300, 300))
-image4 = Image.open("image.jpg").resize((300, 300))
+image1 = Image.open("yolov8.png").resize((300, 300))  # Resize to fit the layout
+image2 = Image.open("pruning3.png").resize((400, 200))
+image3 = Image.open("Quantization.png").resize((400, 200))
+image4 = Image.open("KD.png").resize((400, 200))
 logo = Image.open("Logos.png").resize((1500, 120))
 
 # Convert images to PhotoImage format
@@ -144,23 +144,36 @@ image_label4 = ctk.CTkLabel(app, image=photo4, text="")
 logo_label = ctk.CTkLabel(app, image=logo_photo, text="")
 
 # Create 4 buttons; base model; fp16, int8, kd model
-base_model_button = ctk.CTkButton(app, text="Base Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best.pt", "example_video.mp4", "results/jetson/yolo_m_results.json", "base_model"))
-fp16_button = ctk.CTkButton(app, text="FP32 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best_fp16.engine", "example_video.mp4", "results/jetson/yolo_m_results.json", "fp16"))
-int8_button = ctk.CTkButton(app, text="FP16 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best_int8.engine", "example_video.mp4", "results/jetson/yolo_m_results.json", "int8"))
-kd_button = ctk.CTkButton(app, text="Knowledge Distilled Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train2/weights/best_fp16.pt", "example_video.mp4", "results/jetson/yolo_s_results.json", "fp16"))
+base_model_button = ctk.CTkButton(app, text="Base Model", font=("Arial Bold", 20, "bold" ), width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best.pt", "example_video.mp4", "results/jetson/yolo_m_results.json", "base_model"))
+fp16_button = ctk.CTkButton(app, text="Light Compression", font=("Arial Bold", 20, "bold" ), width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best_fp16.engine", "example_video.mp4", "results/jetson/yolo_m_results.json", "fp16"))
+int8_button = ctk.CTkButton(app, text="Medium Compression", font=("Arial Bold", 20, "bold" ),width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best_int8.engine", "example_video.mp4", "results/jetson/yolo_m_results.json", "int8"))
+kd_button = ctk.CTkButton(app, text="High Compression",font=("Arial Bold", 20, "bold" ), width=button_width, height=button_height, command=lambda: main("runs/detect/train2/weights/best_fp16.pt", "example_video.mp4", "results/jetson/yolo_s_results.json", "fp16"))
+
+# add title in row 0
+title = ctk.CTkLabel(app, text="Object Detection in Railway Construction Sites", font=("Arial Bold", 50, "bold" )).grid(row=0, column=0, columnspan=4, padx=10, pady=10)
+
+# add text in row 1
+text1 = ctk.CTkLabel(app, text="Base Model", font=("Arial Bold", 25, "bold" )).grid(row=1, column=0, columnspan=1, padx=10, pady=10)
+text2 = ctk.CTkLabel(app, text="Pruning", font=("Arial Bold", 25,  "bold")).grid(row=1, column=1, columnspan=1, padx=10, pady=10)
+text3 = ctk.CTkLabel(app, text="Quantization", font=("Arial Bold", 25,  "bold")).grid(row=1, column=2, columnspan=1, padx=10, pady=10)
+text4 = ctk.CTkLabel(app, text="Knowledge Distillation", font=("Arial Bold", 25,  "bold")).grid(row=1, column=3, columnspan=1, padx=10, pady=10)
 
 # Place the images and buttons in a grid, side by side
-image_label1.grid(row=0, column=0, padx=10, pady=10)
-image_label2.grid(row=0, column=1, padx=10, pady=10)
-image_label3.grid(row=0, column=2, padx=10, pady=10)
-image_label4.grid(row=0, column=3, padx=10, pady=10)
+image_label1.grid(row=2, column=0, padx=10, pady=10)
+image_label2.grid(row=2, column=1, padx=10, pady=10)
+image_label3.grid(row=2, column=2, padx=10, pady=10)
+image_label4.grid(row=2, column=3, padx=10, pady=10)
 
-base_model_button.grid(row=1, column=0, padx=10, pady=20)
-fp16_button.grid(row=1, column=1, padx=10, pady=20)
-int8_button.grid(row=1, column=2, padx=10, pady=20)
-kd_button.grid(row=1, column=3, padx=10, pady=20)
+base_model_button.grid(row=3, column=0, padx=10, pady=20)
+fp16_button.grid(row=3, column=1, padx=10, pady=20)
+int8_button.grid(row=3, column=2, padx=10, pady=20)
+kd_button.grid(row=3, column=3, padx=10, pady=20)
 
-logo_label.grid(row=2, column=0, columnspan=4, padx=10, pady=20)
+logo_label.grid(row=4, column=0, columnspan=4, padx=10, pady=20)
+
+# add exit button
+exit_button = ctk.CTkButton(app, text="EXIT", font=("Arial Bold", 20, "bold" ), width=150, height=50, command=app.quit, bg_color="red", fg_color="red")
+exit_button.place(x=1430, y=20)
 
 # Ensure the columns are of equal width to center the images and buttons
 app.grid_columnconfigure((0, 1, 2, 3), weight=1)
