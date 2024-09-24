@@ -116,7 +116,7 @@ def main(model_path, video_path, stats_path, model_type):
 app = ctk.CTk()
 app.geometry("1600x600")
 app.title("YOLO benchmarking")
-ctk.set_appearance_mode("dark")
+ctk.set_appearance_mode("light")
 
 # Define button size
 button_width = 250
@@ -127,7 +127,7 @@ image1 = Image.open("jetson.jpg").resize((300, 300))  # Resize to fit the layout
 image2 = Image.open("image.jpg").resize((300, 300))
 image3 = Image.open("image.jpg").resize((300, 300))
 image4 = Image.open("image.jpg").resize((300, 300))
-logo = Image.open("logo.png").resize((1500, 120))
+logo = Image.open("Logos.png").resize((1500, 120))
 
 # Convert images to PhotoImage format
 photo1 = ImageTk.PhotoImage(image1)
