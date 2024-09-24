@@ -6,7 +6,6 @@ from tqdm import tqdm
 import json
 
 
-
 def load_model(model_path):
     return YOLO(model_path)
 
@@ -36,7 +35,7 @@ def add_stats_to_frame(frame, stats, model_type):
         f"Avg. Emissions: {model_stats['avg_emissions']*1e6:.2e} gCO2eq",
         f"Avg. Energy: {model_stats['avg_energy']*1e6:.2e} mWh",
         f"mAP50: {model_stats['map50']:.4f}, mAP50-95: {model_stats['map5095']:.4f}",
-        f"Hardware: RTX 4090",
+        f"Hardware: Jetson Xavier",
     ]
 
     for i, line in enumerate(lines_top):
@@ -115,18 +114,19 @@ def main(model_path, video_path, stats_path, model_type):
 
 # Initialize the main window
 app = ctk.CTk()
-app.geometry("800x300")
+app.geometry("1080x400")
 app.title("YOLO benchmarking")
+ctk.set_appearance_mode("dark")
 
 # Define button size
 button_width = 200
 button_height = 50
 
 # Load images (ensure you have the correct paths to your images)
-image1 = Image.open("image.jpg").resize((100, 100))  # Resize to fit the layout
-image2 = Image.open("image.jpg").resize((100, 100))
-image3 = Image.open("image.jpg").resize((100, 100))
-image4 = Image.open("image.jpg").resize((100, 100))
+image1 = Image.open("image.jpg").resize((250, 250))  # Resize to fit the layout
+image2 = Image.open("image.jpg").resize((250, 250))
+image3 = Image.open("image.jpg").resize((250, 250))
+image4 = Image.open("image.jpg").resize((250, 250))
 
 # Convert images to PhotoImage format
 photo1 = ImageTk.PhotoImage(image1)
@@ -148,10 +148,10 @@ def run_inference():
 
 
 # Create 4 buttons; base model; fp16, int8, kd model
-base_model_button = ctk.CTkButton(app, text="Base Model", width=button_width, height=button_height, command=run_inference)
-fp16_button = ctk.CTkButton(app, text="FP16 Model", width=button_width, height=button_height, command=lambda: print("FP16 Model"))
-int8_button = ctk.CTkButton(app, text="INT8 Model", width=button_width, height=button_height, command=lambda: print("INT8 Model"))
-kd_button = ctk.CTkButton(app, text="Knowledge Distilled Model", width=button_width, height=button_height, command=lambda: print("Knowledge Distilled Model"))
+base_model_button = ctk.CTkButton(app, text="Base Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train5/weights/best.pt", "example_video.mp4", "results/jetson/yolo_x_results.json", "base_model"))
+fp16_button = ctk.CTkButton(app, text="FP16 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train5/weights/best_fp16.engine", "example_video.mp4", "results/jetson/yolo_x_results.json", "fp16"))
+int8_button = ctk.CTkButton(app, text="INT8 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train5/weights/best_int8.engine", "example_video.mp4", "results/jetson/yolo_x_results.json", "int8"))
+kd_button = ctk.CTkButton(app, text="Knowledge Distilled Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train5/weights/best_kd.pt", "example_video.mp4", "results/jetson/yolo_x_results.json", "kd"))
 
 # Place the images and buttons in a grid, side by side
 image_label1.grid(row=0, column=0, padx=10, pady=10)
