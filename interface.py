@@ -119,8 +119,8 @@ app.title("YOLO benchmarking")
 ctk.set_appearance_mode("dark")
 
 # Define button size
-button_width = 200
-button_height = 50
+button_width = 250
+button_height = 70
 
 # Load images (ensure you have the correct paths to your images)
 image1 = Image.open("jetson.jpg").resize((300, 300))  # Resize to fit the layout
@@ -145,8 +145,8 @@ logo_label = ctk.CTkLabel(app, image=logo_photo, text="")
 
 # Create 4 buttons; base model; fp16, int8, kd model
 base_model_button = ctk.CTkButton(app, text="Base Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best.pt", "example_video.mp4", "results/jetson/yolo_m_results.json", "base_model"))
-fp16_button = ctk.CTkButton(app, text="FP16 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best_fp16.engine", "example_video.mp4", "results/jetson/yolo_m_results.json", "fp16"))
-int8_button = ctk.CTkButton(app, text="INT8 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best_int8.engine", "example_video.mp4", "results/jetson/yolo_m_results.json", "int8"))
+fp16_button = ctk.CTkButton(app, text="FP32 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best_fp16.engine", "example_video.mp4", "results/jetson/yolo_m_results.json", "fp16"))
+int8_button = ctk.CTkButton(app, text="FP16 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best_int8.engine", "example_video.mp4", "results/jetson/yolo_m_results.json", "int8"))
 kd_button = ctk.CTkButton(app, text="Knowledge Distilled Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train2/weights/best_fp16.pt", "example_video.mp4", "results/jetson/yolo_s_results.json", "fp16"))
 
 # Place the images and buttons in a grid, side by side
