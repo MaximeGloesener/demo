@@ -87,7 +87,7 @@ def process_video(model, video_path, stats, model_type, conf_threshold=0.40, iou
 
             # Display the frame
             # resize the frame to fit the screen
-            annotated_frame = cv2.resize(annotated_frame, (1280, 720))
+            annotated_frame = cv2.resize(annotated_frame, (1600, 900))
             cv2.imshow("YOLOv8 Inference", annotated_frame)
 
             # Break on 'q' key press
@@ -114,7 +114,7 @@ def main(model_path, video_path, stats_path, model_type):
 
 # Initialize the main window
 app = ctk.CTk()
-app.geometry("1080x400")
+app.geometry("1600x600")
 app.title("YOLO benchmarking")
 ctk.set_appearance_mode("dark")
 
@@ -123,35 +123,31 @@ button_width = 200
 button_height = 50
 
 # Load images (ensure you have the correct paths to your images)
-image1 = Image.open("image.jpg").resize((250, 250))  # Resize to fit the layout
-image2 = Image.open("image.jpg").resize((250, 250))
-image3 = Image.open("image.jpg").resize((250, 250))
-image4 = Image.open("image.jpg").resize((250, 250))
+image1 = Image.open("jetson.jpg").resize((300, 300))  # Resize to fit the layout
+image2 = Image.open("image.jpg").resize((300, 300))
+image3 = Image.open("image.jpg").resize((300, 300))
+image4 = Image.open("image.jpg").resize((300, 300))
+logo = Image.open("logo.png").resize((1500, 120))
 
 # Convert images to PhotoImage format
 photo1 = ImageTk.PhotoImage(image1)
 photo2 = ImageTk.PhotoImage(image2)
 photo3 = ImageTk.PhotoImage(image3)
 photo4 = ImageTk.PhotoImage(image4)
+logo_photo = ImageTk.PhotoImage(logo)
 
 # Create 4 image labels for the images above the buttons
 image_label1 = ctk.CTkLabel(app, image=photo1, text="")
 image_label2 = ctk.CTkLabel(app, image=photo2, text="")
 image_label3 = ctk.CTkLabel(app, image=photo3, text="")
 image_label4 = ctk.CTkLabel(app, image=photo4, text="")
-
-
-# when you click on button, run YOLO inference on the selected model and display stats on the image
-def run_inference():
-    print(f"Running inference")
-    main("best.pt", "example_video.mp4", "results/4090/yolo_n_results.json", "base_model")
-
+logo_label = ctk.CTkLabel(app, image=logo_photo, text="")
 
 # Create 4 buttons; base model; fp16, int8, kd model
-base_model_button = ctk.CTkButton(app, text="Base Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train5/weights/best.pt", "example_video.mp4", "results/jetson/yolo_x_results.json", "base_model"))
-fp16_button = ctk.CTkButton(app, text="FP16 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train5/weights/best_fp16.engine", "example_video.mp4", "results/jetson/yolo_x_results.json", "fp16"))
-int8_button = ctk.CTkButton(app, text="INT8 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train5/weights/best_int8.engine", "example_video.mp4", "results/jetson/yolo_x_results.json", "int8"))
-kd_button = ctk.CTkButton(app, text="Knowledge Distilled Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train5/weights/best_kd.pt", "example_video.mp4", "results/jetson/yolo_x_results.json", "kd"))
+base_model_button = ctk.CTkButton(app, text="Base Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best.pt", "example_video.mp4", "results/jetson/yolo_m_results.json", "base_model"))
+fp16_button = ctk.CTkButton(app, text="FP16 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best_fp16.engine", "example_video.mp4", "results/jetson/yolo_m_results.json", "fp16"))
+int8_button = ctk.CTkButton(app, text="INT8 Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train3/weights/best_int8.engine", "example_video.mp4", "results/jetson/yolo_m_results.json", "int8"))
+kd_button = ctk.CTkButton(app, text="Knowledge Distilled Model", width=button_width, height=button_height, command=lambda: main("runs/detect/train2/weights/best_fp16.pt", "example_video.mp4", "results/jetson/yolo_s_results.json", "fp16"))
 
 # Place the images and buttons in a grid, side by side
 image_label1.grid(row=0, column=0, padx=10, pady=10)
@@ -163,6 +159,8 @@ base_model_button.grid(row=1, column=0, padx=10, pady=20)
 fp16_button.grid(row=1, column=1, padx=10, pady=20)
 int8_button.grid(row=1, column=2, padx=10, pady=20)
 kd_button.grid(row=1, column=3, padx=10, pady=20)
+
+logo_label.grid(row=2, column=0, columnspan=4, padx=10, pady=20)
 
 # Ensure the columns are of equal width to center the images and buttons
 app.grid_columnconfigure((0, 1, 2, 3), weight=1)
