@@ -80,8 +80,6 @@ def benchmark_yolo(model, imgsz):
 
     return mean_time, std_time, fps, total_emissions, total_energy, avg_emissions, avg_energy
 
-
-
 @torch.no_grad()
 def benchmark(model, imgsz, type='pt'):
     input_data = np.random.rand(imgsz, imgsz, 3).astype(np.float32)

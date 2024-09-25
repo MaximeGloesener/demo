@@ -1,7 +1,7 @@
 path: .
-train: train
-val: val
-test: test
+train: /home/maxglo/maxime/demo/datasets/train
+val: /home/maxglo/maxime/demo/datasets/val
+test: /home/maxglo/maxime/demo/datasets/test
 batch: 16
 imgsz: 640
 names:

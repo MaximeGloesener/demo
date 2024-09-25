@@ -68,7 +68,7 @@ def process_video(model, video_path, output_path, stats, model_type, conf_thresh
                 break
 
             # Run YOLOv8 inference on the frame
-            results = model(frame, conf=conf_threshold, iou=iou_threshold, verbose=False)
+            results = model(frame, conf=0.15, iou=iou_threshold, verbose=False)
 
             # Visualize the results on the frame
             annotated_frame = results[0].plot()

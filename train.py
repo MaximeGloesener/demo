@@ -7,4 +7,4 @@ args = parser.parse_args()
 
 
 model = YOLO(f'{args.model}.pt')
-model.train(data='data.yaml', epochs=50, imgsz=640, batch=32)
+model.train(data='data.yaml', epochs=50, imgsz=640, batch=16)
