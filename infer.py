@@ -1,9 +1,9 @@
 from ultralytics import YOLO
 import cv2
 
-model = YOLO('runs/detect/train5/weights/best.pt')
+model = YOLO('best.pt')
 
-image = 'r10.jpg'
+image = 'r2.jpg'
 
 results = model(image, imgsz=640, conf=0.4)
 

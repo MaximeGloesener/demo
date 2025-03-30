@@ -7,6 +7,7 @@ teacher_model = YOLO('runs/detect/train5/weights/best.pt')
 # Load the student model (YOLOv8s)
 student_model = YOLO('runs/detect/train/weights/best.pt')
 
+
 # Define the loss function for distillation
 def distillation_loss(student_outputs, teacher_outputs, target, alpha=0.5, temperature=3):
     # Standard loss (e.g., YOLO loss)

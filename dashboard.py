@@ -33,7 +33,7 @@ def load_all_data(hardware):
     model_sizes = ['n', 's', 'm', 'l', 'x']  # Add or modify as needed
     data = {}
     for size in model_sizes:
-        file_path = f'results/{hardware}/yolo_{size}_results.json'  # Adjust file naming convention if needed
+        file_path = f'results/{hardware}/resultsyolov11{size}.json'  # Adjust file naming convention if needed
         data[size] = load_data(file_path)
     return prepare_dataframe(data)
 
@@ -49,7 +49,7 @@ metrics = [
 model_sizes = ['n', 's', 'm', 'l', 'x']
 
 # Load initial data for default hardware
-df = load_all_data('4090')
+df = load_all_data('jetson')
 
 
 # Define the layout
@@ -61,10 +61,9 @@ app.layout = html.Div([
         dcc.Dropdown(
             id='hardware-dropdown',
             options=[
-                {'label': 'RTX 4090', 'value': '4090'},
                 {'label': 'Jetson Xavier', 'value': 'jetson'}
             ],
-            value='4090'  # Default value
+            value='jetson'  # Default value
         ),
     ], style={'width': '30%', 'display': 'inline-block'}),
 
